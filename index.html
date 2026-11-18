@@ -105,7 +105,6 @@
 </div>
 
 <script>
-  // Logika obsługi formularza CamHunt
   const modal = document.getElementById('cam-hunter-modal');
   document.getElementById('cam-hunter-btn').onclick = () => modal.style.display = 'flex';
   document.getElementById('ch-close').onclick = () => modal.style.display = 'none';
@@ -122,7 +121,7 @@
       return;
     }
 
-    // Pakiet danych nowej kamery
+    // Obiekt testowej/fake kamery
     const newCameraData = {
       id: "CAM-HUNT-" + Date.now(),
       name: name,
@@ -133,18 +132,42 @@
       addedAt: new Date().toISOString()
     };
 
-    // Pobranie lokalnej bazy z pamięci przeglądarki (lub przygotowanie pod chmurę)
+    // Zapis w pamięci przeglądarki
     let communityCams = JSON.parse(localStorage.getItem('poland_community_cams') || '[]');
     communityCams.push(newCameraData);
     localStorage.setItem('poland_community_cams', JSON.stringify(communityCams));
 
-    alert("Sukces! Kamera dodana do bazy. Twój punkt zasilił mapę Polski (+100 XP dla Ciebie)!");
+    alert("Sukces! Kamera dodana do lokalnej bazy i renderowana na mapie.");
     modal.style.display = 'none';
-    
-    // Automatyczne odświeżenie mapy, aby wczytać nowy punkt
-    location.reload();
+
+    // TEST AUTOMATYCZNEGO DODANIA NA MAPĘ:
+    // Sprawdzamy czy główna aplikacja posiada funkcję renderującą punkty (np. addEntity lub podobną)
+    if (typeof window.viewer !== 'undefined' && window.viewer.entities) {
+      window.viewer.entities.add({
+        position: Cesium.Cartesian3.fromDegrees(lon, lat, 10),
+        point: {
+          pixelSize: 12,
+          color: Cesium.Color.RED,
+          outlineColor: Cesium.Color.WHITE,
+          outlineWidth: 2
+        },
+        label: {
+          text: name,
+          font: '12pt sans-serif',
+          style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+          fillColor: Cesium.Color.WHITE,
+          outlineColor: Cesium.Color.BLACK,
+          pixelOffset: new Cesium.Cartesian2(0, -20)
+        }
+      });
+      console.log("Dodano punkt bezpośrednio do silnika Cesium!");
+    } else {
+      // Awaryjne odświeżenie, jeśli silnik łaci punkty z LocalStorage przy starcie
+      location.reload();
+    }
   };
 </script>
+
 
 
 
