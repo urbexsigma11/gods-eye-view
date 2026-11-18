@@ -51,5 +51,103 @@
   </div>
 
   <script type="module" src="/src/main.js"></script>
+
+!-- ========================================== -->
+<!-- MODUŁ SPOŁECZNOŚCIOWY: DODAJ KAŻDĄ KAMERĘ  -->
+<!-- ========================================== -->
+
+<!-- Pływający przycisk "Dodaj kamerę" -->
+<button id="cam-hunter-btn" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: #dc2626; color: white; border: none; padding: 14px 20px; border-radius: 50px; font-weight: bold; font-size: 15px; cursor: pointer; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.5); display: flex; align-items: center; gap: 8px;">
+  <span>📷</span> + Dodaj Kamerę (Polska)
+</button>
+
+<!-- Okno formularza (Modal) -->
+<div id="cam-hunter-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; font-family: sans-serif;">
+  <div style="background: #111827; color: white; padding: 25px; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid #374151;">
+    <h2 style="margin-top: 0; color: #f87171; font-size: 20px;">🕵️‍♂️ CamHunt Poland - Dodaj punkt</h2>
+    <p style="font-size: 13px; color: #9ca3af; margin-bottom: 20px;">Zbudujmy mapę polskiego monitoringu! Dodaj kamerę miejską, Wi-Fi, stream z laptopa lub YouTube.</p>
+    
+    <!-- Nazwa -->
+    <label style="display:block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #d1d5db;">NAZWA LOKALIZACJI:</label>
+    <input type="text" id="ch-name" placeholder="np. Pruszków - Dworzec / Laptop Pawła" style="width: 100%; padding: 10px; background: #1f2937; border: 1px solid #4b5563; color: white; border-radius: 6px; margin-bottom: 15px; box-sizing: border-box;">
+
+    <!-- Typ kamery -->
+    <label style="display:block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #d1d5db;">RODZAJ KAMERY / ŹRÓDŁA:</label>
+    <select id="ch-type" style="width: 100%; padding: 10px; background: #1f2937; border: 1px solid #4b5563; color: white; border-radius: 6px; margin-bottom: 15px; box-sizing: border-box;">
+      <option value="youtube">YouTube Live (Stream publiczny)</option>
+      <option value="wifi">Kamera IP / Wi-Fi (Sklep, dom, podwórko)</option>
+      <option value="laptop">Prywatny Laptop / Telefon (Lokalny stream)</option>
+      <option value="rtsp">Protokół RTSP / HLS (.m3u8)</option>
+    </select>
+
+    <!-- Współrzędne GPS -->
+    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+      <div style="flex: 1;">
+        <label style="display:block; font-size: 11px; font-weight: bold; margin-bottom: 5px; color: #d1d5db;">SZEROKOŚĆ (LAT):</label>
+        <input type="number" id="ch-lat" step="0.0001" value="52.1665" style="width: 100%; padding: 8px; background: #1f2937; border: 1px solid #4b5563; color: white; border-radius: 6px; box-sizing: border-box;">
+      </div>
+      <div style="flex: 1;">
+        <label style="display:block; font-size: 11px; font-weight: bold; margin-bottom: 5px; color: #d1d5db;">DŁUGOŚĆ (LON):</label>
+        <input type="number" id="ch-lon" step="0.0001" value="20.7973" style="width: 100%; padding: 8px; background: #1f2937; border: 1px solid #4b5563; color: white; border-radius: 6px; box-sizing: border-box;">
+      </div>
+    </div>
+
+    <!-- Link / URL do strumienia -->
+    <label style="display:block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #d1d5db;">ADRES STREAMU / LINK DO WIDEO:</label>
+    <input type="text" id="ch-url" placeholder="https://youtube.com/... lub rtsp://IP:port/stream" style="width: 100%; padding: 10px; background: #1f2937; border: 1px solid #4b5563; color: white; border-radius: 6px; margin-bottom: 20px; box-sizing: border-box;">
+
+    <!-- Przyciski akcji -->
+    <div style="display: flex; justify-content: flex-end; gap: 10px;">
+      <button id="ch-close" style="background: #4b5563; color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: bold;">Anuluj</button>
+      <button id="ch-save" style="background: #16a34a; color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: bold;">Opublikuj na mapie 🚀</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Logika obsługi formularza CamHunt
+  const modal = document.getElementById('cam-hunter-modal');
+  document.getElementById('cam-hunter-btn').onclick = () => modal.style.display = 'flex';
+  document.getElementById('ch-close').onclick = () => modal.style.display = 'none';
+
+  document.getElementById('ch-save').onclick = () => {
+    const name = document.getElementById('ch-name').value;
+    const type = document.getElementById('ch-type').value;
+    const lat = parseFloat(document.getElementById('ch-lat').value);
+    const lon = parseFloat(document.getElementById('ch-lon').value);
+    const url = document.getElementById('ch-url').value;
+
+    if (!name || !url) {
+      alert("Podaj nazwę oraz adres strumienia/link do wideo!");
+      return;
+    }
+
+    // Pakiet danych nowej kamery
+    const newCameraData = {
+      id: "CAM-HUNT-" + Date.now(),
+      name: name,
+      type: type,
+      lat: lat,
+      lon: lon,
+      url: url,
+      addedAt: new Date().toISOString()
+    };
+
+    // Pobranie lokalnej bazy z pamięci przeglądarki (lub przygotowanie pod chmurę)
+    let communityCams = JSON.parse(localStorage.getItem('poland_community_cams') || '[]');
+    communityCams.push(newCameraData);
+    localStorage.setItem('poland_community_cams', JSON.stringify(communityCams));
+
+    alert("Sukces! Kamera dodana do bazy. Twój punkt zasilił mapę Polski (+100 XP dla Ciebie)!");
+    modal.style.display = 'none';
+    
+    // Automatyczne odświeżenie mapy, aby wczytać nowy punkt
+    location.reload();
+  };
+</script>
+
+
+
+
 </body>
-</html>
+<HTML>
