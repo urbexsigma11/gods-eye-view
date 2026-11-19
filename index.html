@@ -56,24 +56,7 @@
 <!-- MODUŁ SPOŁECZNOŚCIOWY: DODAJ KAŻDĄ KAMERĘ  -->
 <!-- ========================================== -->
 
-<!-- Pływający przycisk "Dodaj kamerę" -->
-<button id="cam-hunter-btn" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: #dc2626; color: white; border: none; padding: 14px 20px; border-radius: 50px; font-weight: bold; font-size: 15px; cursor: pointer; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.5); display: flex; align-items: center; gap: 8px;">
-  <span>📷</span> + Dodaj Kamerę (Polska)
-</button>
-
-<!-- Okno formularza (Modal) -->
-<div id="cam-hunter-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 10000; justify-content: center; align-items: center; font-family: sans-serif;">
-  <div style="background: #111827; color: white; padding: 25px; border-radius: 12px; width: 90%; max-width: 500px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); border: 1px solid #374151;">
-    <h2 style="margin-top: 0; color: #f87171; font-size: 20px;">🕵️‍♂️ CamHunt Poland - Dodaj punkt</h2>
-    <p style="font-size: 13px; color: #9ca3af; margin-bottom: 20px;">Zbudujmy mapę polskiego monitoringu! Dodaj kamerę miejską, Wi-Fi, stream z laptopa lub YouTube.</p>
-    
-    <!-- Nazwa -->
-    <label style="display:block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #d1d5db;">NAZWA LOKALIZACJI:</label>
-    <input type="text" id="ch-name" placeholder="np. Pruszków - Dworzec / Laptop Pawła" style="width: 100%; padding: 10px; background: #1f2937; border: 1px solid #4b5563; color: white; border-radius: 6px; margin-bottom: 15px; box-sizing: border-box;">
-
-    <!-- Typ kamery -->
-    <label style="display:block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #d1d5db;">RODZAJ KAMERY / ŹRÓDŁA:</label>
-    <select id="ch-type" style="width: 100%; padding: 10px; background: #1f2937; border: 1px solid #4b5563; color: white; border-radius: 6px; margin-bottom: 15px; box-sizing: border-box;">
+<box;">
       <option value="youtube">YouTube Live (Stream publiczny)</option>
       <option value="wifi">Kamera IP / Wi-Fi (Sklep, dom, podwórko)</option>
       <option value="laptop">Prywatny Laptop / Telefon (Lokalny stream)</option>
@@ -104,69 +87,280 @@
   </div>
 </div>
 
+<!-- ========================================== -->
+<!-- MODUŁ CAMHUNT: PRZYCISK + AUTO-MAPA        -->
+<!-- ========================================== -->
+<button
+  id="cam-hunter-btn"
+  type="button"
+  style="position: fixed; bottom: 95px; right: 16px; z-index: 99999; background: #dc2626; color: #ffffff; border: 2px solid #fca5a5; padding: 12px 18px; border-radius: 999px; font-weight: 700; font-size: 14px; font-family: system-ui, -apple-system, sans-serif; cursor: pointer; box-shadow: 0 6px 20px rgba(220, 38, 38, 0.55); display: inline-flex; align-items: center; gap: 8px;"
+>
+  <span aria-hidden="true">📷</span>
+  <span>+ Dodaj Kamerę</span>
+</button>
+
+<div
+  id="cam-hunter-modal"
+  style="display: none; position: fixed; inset: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 100000; justify-content: center; align-items: center; padding: 16px; box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif;"
+>
+  <div
+    style="background: #111827; color: #f9fafb; padding: 20px; border-radius: 14px; width: 100%; max-width: 460px; max-height: 90vh; overflow-y: auto; box-shadow: 0 12px 35px rgba(0, 0, 0, 0.85); border: 1px solid #374151; box-sizing: border-box;"
+  >
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+      <h2 style="margin: 0; color: #f87171; font-size: 18px;">Dodaj kamerę na mapę</h2>
+      <button
+        id="ch-close-x"
+        type="button"
+        style="background: transparent; color: #9ca3af; border: none; font-size: 22px; line-height: 1; cursor: pointer; padding: 4px;"
+      >
+        ×
+      </button>
+    </div>
+
+    <label for="ch-name" style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #e5e7eb;">
+      Nazwa punktu:
+    </label>
+    <input
+      type="text"
+      id="ch-name"
+      placeholder="np. Pruszków - Rynek / Laptop test"
+      style="width: 100%; padding: 10px; background: #1f2937; border: 1px solid #4b5563; color: #ffffff; border-radius: 8px; margin-bottom: 12px; box-sizing: border-box; font-size: 14px;"
+    />
+
+    <label for="ch-type" style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #e5e7eb;">
+      Rodzaj kamery:
+    </label>
+    <select
+      id="ch-type"
+      style="width: 100%; padding: 10px; background: #1f2937; border: 1px solid #4b5563; color: #ffffff; border-radius: 8px; margin-bottom: 12px; box-sizing: border-box; font-size: 14px;"
+    >
+      <option value="youtube">YouTube / Stream WWW</option>
+      <option value="wifi">Kamera Wi-Fi / IP</option>
+      <option value="laptop">Prywatny laptop / telefon</option>
+      <option value="rtsp_hls">RTSP / HLS (.m3u8) / Wideo</option>
+      <option value="other">Inna kamera</option>
+    </select>
+
+    <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+      <div style="flex: 1;">
+        <label for="ch-lat" style="display: block; font-size: 11px; font-weight: 600; margin-bottom: 4px; color: #e5e7eb;">
+          Szerokość (Lat):
+        </label>
+        <input
+          type="number"
+          id="ch-lat"
+          step="0.0001"
+          value="52.1665"
+          style="width: 100%; padding: 9px; background: #1f2937; border: 1px solid #4b5563; color: #ffffff; border-radius: 8px; box-sizing: border-box; font-size: 14px;"
+        />
+      </div>
+      <div style="flex: 1;">
+        <label for="ch-lon" style="display: block; font-size: 11px; font-weight: 600; margin-bottom: 4px; color: #e5e7eb;">
+          Długość (Lon):
+        </label>
+        <input
+          type="number"
+          id="ch-lon"
+          step="0.0001"
+          value="20.7973"
+          style="width: 100%; padding: 9px; background: #1f2937; border: 1px solid #4b5563; color: #ffffff; border-radius: 8px; box-sizing: border-box; font-size: 14px;"
+        />
+      </div>
+    </div>
+
+    <label for="ch-url" style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #e5e7eb;">
+      Link / adres strumienia:
+    </label>
+    <input
+      type="text"
+      id="ch-url"
+      placeholder="https://... lub http://IP:port/... lub rtsp://..."
+      style="width: 100%; padding: 10px; background: #1f2937; border: 1px solid #4b5563; color: #ffffff; border-radius: 8px; margin-bottom: 16px; box-sizing: border-box; font-size: 14px;"
+    />
+
+    <div style="display: flex; justify-content: flex-end; gap: 10px;">
+      <button
+        id="ch-close"
+        type="button"
+        style="background: #374151; color: #f9fafb; border: none; padding: 10px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px;"
+      >
+        Anuluj
+      </button>
+      <button
+        id="ch-save"
+        type="button"
+        style="background: #16a34a; color: #ffffff; border: none; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px;"
+      >
+        Dodaj na mapę
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
-  const modal = document.getElementById('cam-hunter-modal');
-  document.getElementById('cam-hunter-btn').onclick = () => modal.style.display = 'flex';
-  document.getElementById('ch-close').onclick = () => modal.style.display = 'none';
+  (function () {
+    const STORAGE_KEY = "poland_community_cams_v1";
+    const btn = document.getElementById("cam-hunter-btn");
+    const modal = document.getElementById("cam-hunter-modal");
+    const closeBtn = document.getElementById("ch-close");
+    const closeX = document.getElementById("ch-close-x");
+    const saveBtn = document.getElementById("ch-save");
 
-  document.getElementById('ch-save').onclick = () => {
-    const name = document.getElementById('ch-name').value;
-    const type = document.getElementById('ch-type').value;
-    const lat = parseFloat(document.getElementById('ch-lat').value);
-    const lon = parseFloat(document.getElementById('ch-lon').value);
-    const url = document.getElementById('ch-url').value;
+    if (!btn || !modal || !saveBtn) return;
 
-    if (!name || !url) {
-      alert("Podaj nazwę oraz adres strumienia/link do wideo!");
-      return;
-    }
-
-    // Obiekt testowej/fake kamery
-    const newCameraData = {
-      id: "CAM-HUNT-" + Date.now(),
-      name: name,
-      type: type,
-      lat: lat,
-      lon: lon,
-      url: url,
-      addedAt: new Date().toISOString()
-    };
-
-    // Zapis w pamięci przeglądarki
-    let communityCams = JSON.parse(localStorage.getItem('poland_community_cams') || '[]');
-    communityCams.push(newCameraData);
-    localStorage.setItem('poland_community_cams', JSON.stringify(communityCams));
-
-    alert("Sukces! Kamera dodana do lokalnej bazy i renderowana na mapie.");
-    modal.style.display = 'none';
-
-    // TEST AUTOMATYCZNEGO DODANIA NA MAPĘ:
-    // Sprawdzamy czy główna aplikacja posiada funkcję renderującą punkty (np. addEntity lub podobną)
-    if (typeof window.viewer !== 'undefined' && window.viewer.entities) {
-      window.viewer.entities.add({
-        position: Cesium.Cartesian3.fromDegrees(lon, lat, 10),
-        point: {
-          pixelSize: 12,
-          color: Cesium.Color.RED,
-          outlineColor: Cesium.Color.WHITE,
-          outlineWidth: 2
-        },
-        label: {
-          text: name,
-          font: '12pt sans-serif',
-          style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-          fillColor: Cesium.Color.WHITE,
-          outlineColor: Cesium.Color.BLACK,
-          pixelOffset: new Cesium.Cartesian2(0, -20)
+    function openModal() {
+      // Jeśli mapa Cesium ma aktualny środek ekranu, podstaw jego współrzędne
+      try {
+        const viewer = findCesiumViewer();
+        if (viewer && viewer.camera && window.Cesium) {
+          const carto = window.Cesium.Cartographic.fromCartesian(viewer.camera.position);
+          if (carto) {
+            document.getElementById("ch-lat").value = window.Cesium.Math.toDegrees(carto.latitude).toFixed(4);
+            document.getElementById("ch-lon").value = window.Cesium.Math.toDegrees(carto.longitude).toFixed(4);
+          }
         }
-      });
-      console.log("Dodano punkt bezpośrednio do silnika Cesium!");
-    } else {
-      // Awaryjne odświeżenie, jeśli silnik łaci punkty z LocalStorage przy starcie
-      location.reload();
+      } catch (e) {}
+      modal.style.display = "flex";
     }
-  };
+
+    function closeModal() {
+      modal.style.display = "none";
+    }
+
+    btn.addEventListener("click", openModal);
+    if (closeBtn) closeBtn.addEventListener("click", closeModal);
+    if (closeX) closeX.addEventListener("click", closeModal);
+    modal.addEventListener("click", function (e) {
+      if (e.target === modal) closeModal();
+    });
+
+    // Szuka instancji Cesium Viewer w window (nawet jeśli nie jest dokładnie pod window.viewer)
+    function findCesiumViewer() {
+      if (window.viewer && window.viewer.entities) return window.viewer;
+      for (const key of Object.keys(window)) {
+        try {
+          const val = window[key];
+          if (val && typeof val === "object" && val.entities && val.camera && val.scene) {
+            return val;
+          }
+        } catch (e) {}
+      }
+      return null;
+    }
+
+    // Automatyczne rysowanie punktu na mapie
+    function renderCameraOnMap(cam, flyToCam) {
+      const viewer = findCesiumViewer();
+      if (typeof window.Cesium === "undefined" || !viewer) return false;
+
+      try {
+        // Usuń duplikat jeśli istnieje
+        const existing = viewer.entities.getById(cam.id);
+        if (existing) viewer.entities.remove(existing);
+
+        const entity = viewer.entities.add({
+          id: cam.id,
+          name: cam.name,
+          position: window.Cesium.Cartesian3.fromDegrees(cam.lon, cam.lat, 15),
+          description: `
+            <div style="font-family: sans-serif; padding: 6px;">
+              <strong>${cam.name}</strong><br/>
+              Typ: ${cam.type}<br/>
+              GPS: ${cam.lat}, ${cam.lon}<br/>
+              <a href="${cam.url}" target="_blank" rel="noopener noreferrer" style="color: #60a5fa;">Otwórz stream / podgląd</a>
+            </div>
+          `,
+          point: {
+            pixelSize: 13,
+            color: window.Cesium.Color.RED,
+            outlineColor: window.Cesium.Color.WHITE,
+            outlineWidth: 2
+          },
+          label: {
+            text: cam.name,
+            font: "12pt sans-serif",
+            style: window.Cesium.LabelStyle.FILL_AND_OUTLINE,
+            fillColor: window.Cesium.Color.WHITE,
+            outlineColor: window.Cesium.Color.BLACK,
+            outlineWidth: 2,
+            verticalOrigin: window.Cesium.VerticalOrigin.BOTTOM,
+            pixelOffset: new window.Cesium.Cartesian2(0, -16)
+          }
+        });
+
+        if (flyToCam && viewer.flyTo) {
+          viewer.selectedEntity = entity;
+          viewer.flyTo(entity, { duration: 1.2 });
+        }
+        return true;
+      } catch (err) {
+        console.error("Błąd renderowania kamery:", err);
+        return false;
+      }
+    }
+
+    // Przywraca wszystkie zapisane kamery po załadowaniu mapy
+    function restoreSavedCameras() {
+      let saved = [];
+      try {
+        saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      } catch (e) {}
+      if (!Array.isArray(saved) || saved.length === 0) return;
+
+      let attempts = 0;
+      const interval = setInterval(() => {
+        attempts++;
+        const ok = saved.every((cam) => renderCameraOnMap(cam, false));
+        if (ok || attempts >= 40) {
+          clearInterval(interval);
+        }
+      }, 500);
+    }
+
+    saveBtn.addEventListener("click", function () {
+      const name = document.getElementById("ch-name").value.trim();
+      const type = document.getElementById("ch-type").value;
+      const lat = parseFloat(document.getElementById("ch-lat").value);
+      const lon = parseFloat(document.getElementById("ch-lon").value);
+      const url = document.getElementById("ch-url").value.trim();
+
+      if (!name || !url || Number.isNaN(lat) || Number.isNaN(lon)) {
+        alert("Wpisz nazwę, poprawne współrzędne (Lat/Lon) oraz link.");
+        return;
+      }
+
+      const cam = {
+        id: "CAM-PL-" + Date.now(),
+        name: name,
+        type: type,
+        lat: lat,
+        lon: lon,
+        url: url,
+        addedAt: new Date().toISOString()
+      };
+
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      saved.push(cam);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+
+      // Wysyła także zdarzenie dla reszty aplikacji (gdyby komponenty React nasłuchiwały)
+      window.dispatchEvent(new CustomEvent("camhunt:camera-added", { detail: cam }));
+
+      const rendered = renderCameraOnMap(cam, true);
+      closeModal();
+
+      document.getElementById("ch-name").value = "";
+      document.getElementById("ch-url").value = "";
+
+      if (!rendered) {
+        alert("Zapisano kamerę. Mapa nie udostępniła globalnego obiektu Viewer — sprawdź konsolę lub podepnij zdarzenie 'camhunt:camera-added'.");
+      }
+    });
+
+    restoreSavedCameras();
+  })();
 </script>
+
 
 
 
